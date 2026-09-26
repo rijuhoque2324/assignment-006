@@ -16,7 +16,7 @@ const Navbar = () => {
         <li><Link href="/my-plan" className={pathname === "/my-plan" ? "bg-lime-950 text-lime-400 font-semibold" : "text-gray-400"}>My Plan</Link></li>
     </>
     return (
-        <div className='bg-base-100 shadow-sm'>
+        <div className='bg-base-100 shadow-sm border-b border-white/10 bg-[#0d0f11]'>
             <nav className="navbar container mx-auto">
                 <div className="navbar-start">
                     <div className="dropdown">

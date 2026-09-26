@@ -3,7 +3,7 @@ import WorkoutCard from "../shared/WorkoutCard";
 import { TypeInterfaceWorkout } from "@/types/Workout";
 
 const getWorkouts = async () => {
-  const res = await fetch("https://api.abcz.workers.dev/api/fitlog");
+  const res = await fetch("https://api.api-store.workers.dev/api/fitlog");
 
   if (!res.ok) {
     throw new Error("Failed to fetch workouts");
@@ -16,7 +16,7 @@ const Workouts = async () => {
   const workoutsData = await getWorkouts();
 
   return (
-    <section className="bg-[#0d0f11] py-12 text-white">
+    <section id="library" className="bg-[#0d0f11] py-12 text-white">
       <div className="container mx-auto px-4">
 
         {/* Section Heading */}

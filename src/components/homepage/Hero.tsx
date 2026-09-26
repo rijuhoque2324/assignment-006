@@ -23,10 +23,11 @@ const Hero = () => {
             pick a lift, lock it <br /> into today&apos;s plan,
             and watch the week&apos;s work add up.
           </p>
+          <br />
 
-          <button className="mt-6 bg-[#b6ff00] px-5 py-2 text-sm font-bold text-black rounded-md">
+          <a href="#library" className="mt-6 bg-[#b6ff00] px-5 py-2 text-sm font-bold text-black rounded-md">
             BROWSE WORKOUTS
-          </button>
+          </a>
         </div>
 
         {/* Right Image */}

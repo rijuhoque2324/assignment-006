@@ -4,8 +4,8 @@ import React from 'react';
 
 
 const getWorkoutDetails  = async (id :number): Promise<TypeInterfaceWorkout> => {
-  const res = await fetch(`https://api.abcz.workers.dev/api/fitlog/${id}`);
-
+  const res = await fetch(`https://api.api-store.workers.dev/api/fitlog/${id}`);
+  
   if (!res.ok) {
     throw new Error("Failed to fetch workouts");
   }
