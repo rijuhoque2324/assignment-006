@@ -13,6 +13,7 @@ interface WorkoutContextType {
 
   removeFromPlan: (id: number) => void;
   removeFromSaved: (id: number) => void;
+  markAsDone: (id: number) => void;
 }
 
 const WorkoutContext = createContext<WorkoutContextType | null>(null);
@@ -87,6 +88,17 @@ export const WorkoutProvider = ({
     toast.success("Workout removed from saved");
   };
 
+  const markAsDone = (id: number) => {
+
+    setTodayPlan((previousPlan) =>
+      previousPlan.filter(
+        (workout) => workout.id !== id
+      )
+    );
+
+    toast.success("Workout marked as done!");
+  };
+
 
   return (
     <WorkoutContext.Provider
@@ -97,6 +109,7 @@ export const WorkoutProvider = ({
         saveForLater,
         removeFromPlan,
         removeFromSaved,
+        markAsDone,
       }}
     >
       {children}

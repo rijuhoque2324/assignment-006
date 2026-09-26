@@ -29,7 +29,8 @@ const PlanWorkoutCard = ({
   // Context থেকে remove functions নিচ্ছি
   const {
     removeFromPlan,
-    removeFromSaved
+    removeFromSaved,
+    markAsDone,
   } = useWorkout();
 
 
@@ -147,17 +148,14 @@ const PlanWorkoutCard = ({
 
         {/* Mark as Done - Only Today's Plan */}
         {type === "plan" && (
-
           <button
+            onClick={() => markAsDone(workout.id)}
             className="flex items-center gap-2 rounded-full bg-lime-400 px-5 py-2 text-xs font-semibold text-black transition hover:bg-lime-300"
           >
-
             <Check size={14} />
 
             Mark as Done
-
           </button>
-
         )}
 
 
