@@ -5,9 +5,12 @@ import Link from 'next/link'
 import Image from 'next/image';
 import logo from "@/assets/logo.png"
 import { usePathname } from "next/navigation";
+import { useWorkout } from "@/context/WorkoutContext";
+
 
 const Navbar = () => {
     const pathname = usePathname();
+    const { todayPlan, savedWorkouts } = useWorkout();
     const links = <>
         <li><Link href="/workouts" className={pathname === "/workouts" ? "bg-lime-950 text-lime-400 font-semibold rounded-3xl" : "text-gray-400"}>Workout</Link></li>
         <li><Link href="/my-plan" className={pathname === "/my-plan" ? "bg-lime-950 text-lime-400 font-semibold" : "text-gray-400"}>My Plan</Link></li>
@@ -39,8 +42,26 @@ const Navbar = () => {
                     </ul>
                 </div>
                 <div className="navbar-end gap-4">
-                    <button>Plan <span>0</span></button>
-                    <button>Saved <span>0</span></button>
+                   <div className="flex items-center gap-2">
+                        <span className="text-sm text-gray-300">
+                        Plan
+                        </span>
+
+                        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-lime-400 text-sm font-bold text-black">
+                        {todayPlan.length}
+                        </span>
+                    </div>
+
+                    {/* Saved */}
+                    <div className="flex items-center gap-2">
+                        <span className="text-sm text-gray-400">
+                        Saved
+                        </span>
+
+                        <span className="flex h-7 w-7 items-center justify-center rounded-full border border-gray-700 text-sm text-gray-400">
+                        {savedWorkouts.length}
+                        </span>
+                    </div>
                 </div>
             </nav>
         </div>

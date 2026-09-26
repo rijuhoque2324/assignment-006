@@ -1,4 +1,4 @@
-import WorkoutDetails from '@/components/WorkoutDetails';
+import WorkoutDetails from '@/components/shared/WorkoutDetails';
 import { TypeInterfaceWorkout } from '@/types/Workout';
 import React from 'react';
 

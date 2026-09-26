@@ -3,41 +3,63 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import PlanWorkoutCard from "@/components/shared/PlanWorkoutCard";
-import { TypeInterfaceWorkout } from "@/types/Workout";
+import { useWorkout } from "@/context/WorkoutContext";
 
 const Page = () => {
 
-  // Active Tab
-  const [activeTab, setActiveTab] = useState<"plan" | "saved">("plan");
+  const [activeTab, setActiveTab] =
+    useState<"plan" | "saved">("plan");
+
+  const [sortBy, setSortBy] =
+    useState<"duration" | "calories" | "rating">("duration");
 
 
-  // Today's Plan Data
-  const todayWorkouts: TypeInterfaceWorkout[] = [];
+  const {
+    todayPlan,
+    savedWorkouts
+  } = useWorkout();
 
 
-  // Saved Data
-  const savedWorkouts: TypeInterfaceWorkout[] = [];
-
-
-  // কোন tab-এর data দেখাবো
+  // Selected tab অনুযায়ী data
   const workouts =
     activeTab === "plan"
-      ? todayWorkouts
+      ? todayPlan
       : savedWorkouts;
 
 
-  // Summary Calculation
-  const exercises = todayWorkouts.length;
+  // Selected tab অনুযায়ী Summary
+  const exercises = workouts.length;
 
-  const minutes = todayWorkouts.reduce(
+
+  const minutes = workouts.reduce(
     (total, workout) => total + workout.duration,
     0
   );
 
-  const calories = todayWorkouts.reduce(
+
+  const calories = workouts.reduce(
     (total, workout) => total + workout.caloriesBurned,
     0
   );
+
+
+  // Sorting
+  const sortedWorkouts = [...workouts].sort((a, b) => {
+
+    if (sortBy === "duration") {
+      return a.duration - b.duration;
+    }
+
+    if (sortBy === "calories") {
+      return a.caloriesBurned - b.caloriesBurned;
+    }
+
+    if (sortBy === "rating") {
+      return b.rating - a.rating;
+    }
+
+    return 0;
+  });
 
 
   return (
@@ -47,6 +69,7 @@ const Page = () => {
 
         {/* Heading */}
         <div>
+
           <h1 className="text-3xl font-bold uppercase">
             My Plan
           </h1>
@@ -54,6 +77,7 @@ const Page = () => {
           <p className="mt-1 text-sm text-gray-400">
             Cap of five lifts for today. Finish them, then load more.
           </p>
+
         </div>
 
 
@@ -110,10 +134,9 @@ const Page = () => {
           {/* Tabs */}
           <div className="flex rounded-xl border border-gray-800 bg-[#15181e] p-1">
 
-            {/* Today's Plan */}
             <button
               onClick={() => setActiveTab("plan")}
-              className={`rounded-lg px-5 py-2 text-xs transition ${
+              className={`rounded-lg px-5 py-2 text-xs ${
                 activeTab === "plan"
                   ? "bg-[#242934] font-semibold text-white"
                   : "text-gray-500"
@@ -123,10 +146,9 @@ const Page = () => {
             </button>
 
 
-            {/* Saved */}
             <button
               onClick={() => setActiveTab("saved")}
-              className={`rounded-lg px-8 py-2 text-xs transition ${
+              className={`rounded-lg px-8 py-2 text-xs ${
                 activeTab === "saved"
                   ? "bg-[#242934] font-semibold text-white"
                   : "text-gray-500"
@@ -145,7 +167,18 @@ const Page = () => {
               Sort By
             </span>
 
-            <select className="rounded-lg border border-gray-800 bg-[#15181e] px-4 py-2 text-xs outline-none">
+            <select
+              value={sortBy}
+              onChange={(e) =>
+                setSortBy(
+                  e.target.value as
+                    | "duration"
+                    | "calories"
+                    | "rating"
+                )
+              }
+              className="rounded-lg border border-gray-800 bg-[#15181e] px-4 py-2 text-xs outline-none"
+            >
 
               <option value="duration">
                 Duration
@@ -169,15 +202,13 @@ const Page = () => {
         {/* Workout Area */}
         <div className="mt-6">
 
-          {workouts.length === 0 ? (
+          {sortedWorkouts.length === 0 ? (
 
-            /* Empty State */
             <div className="flex min-h-[350px] flex-col items-center justify-center rounded-xl border border-dashed border-gray-800">
 
               <h2 className="text-xl font-bold uppercase">
                 Nothing Here Yet
               </h2>
-
 
               <p className="mt-2 text-sm text-gray-500">
 
@@ -187,10 +218,9 @@ const Page = () => {
 
               </p>
 
-
               <Link
                 href="/workouts"
-                className="mt-6 rounded-full bg-lime-400 px-7 py-3 text-sm font-semibold text-black transition hover:bg-lime-300"
+                className="mt-6 rounded-full bg-lime-400 px-7 py-3 text-sm font-semibold text-black"
               >
                 Go to workouts
               </Link>
@@ -199,10 +229,9 @@ const Page = () => {
 
           ) : (
 
-            /* Workout List */
             <div className="space-y-4">
 
-              {workouts.map((workout) => (
+              {sortedWorkouts.map((workout) => (
 
                 <PlanWorkoutCard
                   key={workout.id}

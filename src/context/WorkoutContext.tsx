@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useState } from "react";
 import { TypeInterfaceWorkout } from "@/types/Workout";
+import { toast } from "react-toastify";
 
 interface WorkoutContextType {
   todayPlan: TypeInterfaceWorkout[];
@@ -9,6 +10,9 @@ interface WorkoutContextType {
 
   addToPlan: (workout: TypeInterfaceWorkout) => void;
   saveForLater: (workout: TypeInterfaceWorkout) => void;
+
+  removeFromPlan: (id: number) => void;
+  removeFromSaved: (id: number) => void;
 }
 
 const WorkoutContext = createContext<WorkoutContextType | null>(null);
@@ -22,34 +26,65 @@ export const WorkoutProvider = ({
   const [todayPlan, setTodayPlan] = useState<TypeInterfaceWorkout[]>([]);
   const [savedWorkouts, setSavedWorkouts] = useState<TypeInterfaceWorkout[]>([]);
 
-
-  // Add to today's plan
+  // Add to plan
   const addToPlan = (workout: TypeInterfaceWorkout) => {
 
-    const alreadyAdded = todayPlan.find(
+    const alreadyAdded = todayPlan.some(
       (item) => item.id === workout.id
     );
 
     if (alreadyAdded) {
+      toast.warning("Workout already added");
       return;
     }
 
     setTodayPlan([...todayPlan, workout]);
+
+    toast.success("Workout added to today's plan");
   };
 
 
   // Save for later
   const saveForLater = (workout: TypeInterfaceWorkout) => {
 
-    const alreadySaved = savedWorkouts.find(
+    const alreadySaved = savedWorkouts.some(
       (item) => item.id === workout.id
     );
 
     if (alreadySaved) {
+      toast.warning("Workout already saved");
       return;
     }
 
     setSavedWorkouts([...savedWorkouts, workout]);
+
+    toast.success("Workout saved for later");
+  };
+
+
+  // Remove from Today's Plan
+  const removeFromPlan = (id: number) => {
+
+    const remainingWorkouts = todayPlan.filter(
+      (workout) => workout.id !== id
+    );
+
+    setTodayPlan(remainingWorkouts);
+
+    toast.success("Workout removed from plan");
+  };
+
+
+  // Remove from Saved
+  const removeFromSaved = (id: number) => {
+
+    const remainingWorkouts = savedWorkouts.filter(
+      (workout) => workout.id !== id
+    );
+
+    setSavedWorkouts(remainingWorkouts);
+
+    toast.success("Workout removed from saved");
   };
 
 
@@ -60,6 +95,8 @@ export const WorkoutProvider = ({
         savedWorkouts,
         addToPlan,
         saveForLater,
+        removeFromPlan,
+        removeFromSaved,
       }}
     >
       {children}

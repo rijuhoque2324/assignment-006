@@ -1,6 +1,11 @@
+"use client";
+
 import { TypeInterfaceWorkout } from "@/types/Workout";
+import { useWorkout } from "@/context/WorkoutContext";
+
 import Image from "next/image";
 import Link from "next/link";
+
 import {
   Clock3,
   Flame,
@@ -9,20 +14,41 @@ import {
   X
 } from "lucide-react";
 
+
 interface PlanWorkoutCardProps {
   workout: TypeInterfaceWorkout;
   type: "plan" | "saved";
 }
+
 
 const PlanWorkoutCard = ({
   workout,
   type
 }: PlanWorkoutCardProps) => {
 
+  // Context থেকে remove functions নিচ্ছি
+  const {
+    removeFromPlan,
+    removeFromSaved
+  } = useWorkout();
+
+
+  // Remove workout
+  const handleRemove = () => {
+
+    if (type === "plan") {
+      removeFromPlan(workout.id);
+    } else {
+      removeFromSaved(workout.id);
+    }
+
+  };
+
+
   return (
     <div className="flex items-center justify-between rounded-xl border border-gray-800 bg-[#15181e] p-4">
 
-      {/* Left */}
+      {/* ================= LEFT SIDE ================= */}
       <div className="flex items-center gap-4">
 
         {/* Image */}
@@ -38,14 +64,16 @@ const PlanWorkoutCard = ({
         </div>
 
 
-        {/* Information */}
+        {/* Workout Information */}
         <div>
 
+          {/* Name */}
           <h2 className="font-bold uppercase">
             {workout.name}
           </h2>
 
 
+          {/* Equipment */}
           <p className="text-xs text-gray-400">
             {workout.equipment}
           </p>
@@ -105,10 +133,10 @@ const PlanWorkoutCard = ({
       </div>
 
 
-      {/* Right */}
+      {/* ================= RIGHT SIDE ================= */}
       <div className="flex items-center gap-3">
 
-        {/* Details */}
+        {/* View Details */}
         <Link
           href={`/workouts/${workout.id}`}
           className="rounded-full border border-gray-700 px-5 py-2 text-xs transition hover:bg-gray-800"
@@ -117,10 +145,12 @@ const PlanWorkoutCard = ({
         </Link>
 
 
-        {/* Only Today's Plan */}
+        {/* Mark as Done - Only Today's Plan */}
         {type === "plan" && (
 
-          <button className="flex items-center gap-2 rounded-full bg-lime-400 px-5 py-2 text-xs font-semibold text-black transition hover:bg-lime-300">
+          <button
+            className="flex items-center gap-2 rounded-full bg-lime-400 px-5 py-2 text-xs font-semibold text-black transition hover:bg-lime-300"
+          >
 
             <Check size={14} />
 
@@ -132,7 +162,11 @@ const PlanWorkoutCard = ({
 
 
         {/* Remove */}
-        <button className="text-gray-500 transition hover:text-white">
+        <button
+          onClick={handleRemove}
+          className="text-gray-500 transition hover:text-red-400"
+          title="Remove workout"
+        >
 
           <X size={17} />
 
@@ -143,5 +177,6 @@ const PlanWorkoutCard = ({
     </div>
   );
 };
+
 
 export default PlanWorkoutCard;
