@@ -20,14 +20,14 @@ const Page = () => {
   } = useWorkout();
 
 
-  // Selected tab অনুযায়ী data
+ 
   const workouts =
     activeTab === "plan"
       ? todayPlan
       : savedWorkouts;
 
 
-  // Selected tab অনুযায়ী Summary
+  
   const exercises = workouts.length;
 
 

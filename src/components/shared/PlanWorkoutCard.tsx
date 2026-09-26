@@ -26,7 +26,7 @@ const PlanWorkoutCard = ({
   type
 }: PlanWorkoutCardProps) => {
 
-  // Context থেকে remove functions নিচ্ছি
+  // taken form context 
   const {
     removeFromPlan,
     removeFromSaved,
@@ -49,7 +49,7 @@ const PlanWorkoutCard = ({
   return (
     <div className="flex items-center justify-between rounded-xl border border-gray-800 bg-[#15181e] p-4">
 
-      {/* ================= LEFT SIDE ================= */}
+      {/* LEFT SIDE  */}
       <div className="flex items-center gap-4">
 
         {/* Image */}
@@ -134,7 +134,7 @@ const PlanWorkoutCard = ({
       </div>
 
 
-      {/* ================= RIGHT SIDE ================= */}
+      {/*  RIGHT SIDE  */}
       <div className="flex items-center gap-3">
 
         {/* View Details */}
